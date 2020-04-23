@@ -2,7 +2,7 @@ package se.kry.codetest.poll;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
-import io.vertx.core.json.Json;
+import io.vertx.core.Promise;
 import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 import io.vertx.serviceproxy.ServiceProxyBuilder;
@@ -15,7 +15,7 @@ public class PollerVerticle extends AbstractVerticle {
     private Service dbService;
     WebClient webClient;
     @Override
-    public void start(Future<Void> fut) throws Exception {
+    public void start(Promise<Void> promise) throws Exception {
 
         ServiceProxyBuilder builder = new ServiceProxyBuilder(vertx).setAddress(ServiceConstants.DB_QUEUE);
 

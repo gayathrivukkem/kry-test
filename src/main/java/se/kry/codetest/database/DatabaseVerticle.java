@@ -2,12 +2,11 @@ package se.kry.codetest.database;
 
 
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.serviceproxy.ServiceBinder;
-import java.util.HashMap;
 import se.kry.codetest.util.ServiceConstants;
 
 public class DatabaseVerticle extends AbstractVerticle {
@@ -15,7 +14,7 @@ public class DatabaseVerticle extends AbstractVerticle {
     private final String DB_PATH = "testDB.db";
 
     @Override
-    public void start(Future<Void> fut) throws Exception {
+    public void start(Promise<Void> promise) throws Exception {
 
         JsonObject config = new JsonObject()
                 .put("url", "jdbc:sqlite:" + DB_PATH)
@@ -28,9 +27,9 @@ public class DatabaseVerticle extends AbstractVerticle {
             if (ready.succeeded()) {
                 ServiceBinder binder = new ServiceBinder(vertx);
                 binder.setAddress(ServiceConstants.DB_QUEUE).register(Service.class, ready.result());
-                fut.complete();
+                promise.complete();
             } else {
-                fut.fail(ready.cause());
+                promise.fail(ready.cause());
             }
         });
     }

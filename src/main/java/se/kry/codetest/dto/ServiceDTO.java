@@ -1,15 +1,13 @@
 package se.kry.codetest.dto;
 
 import io.vertx.codegen.annotations.DataObject;
-import io.vertx.codegen.annotations.ProxyGen;
-import io.vertx.codegen.annotations.VertxGen;
 import io.vertx.core.json.JsonObject;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Random;
 
 @DataObject(generateConverter = true)
 public class ServiceDTO {
 
-    private static final AtomicInteger COUNTER = new AtomicInteger();
+    private static final Random random = new Random();
 
     private final int id;
 
@@ -20,10 +18,10 @@ public class ServiceDTO {
     private String status = "UNKNOWN";
 
     public ServiceDTO(String name, String url, String status) {
-        this.id = COUNTER.getAndIncrement();
+        this.id = random.nextInt(Integer.MAX_VALUE) + 1;
         this.name = name;
         this.url = url;
-        this.status = null == status ? "UNKNOWN" :status;
+        this.status = null == status ? "UNKNOWN" : status;
     }
 
     public ServiceDTO(int id, String name, String url, String status) {
@@ -45,7 +43,7 @@ public class ServiceDTO {
     }
 
     public ServiceDTO() {
-        this.id = COUNTER.getAndIncrement();
+        this.id = random.nextInt(Integer.MAX_VALUE) + 1;
     }
 
     public int getId() {

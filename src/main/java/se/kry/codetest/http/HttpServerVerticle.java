@@ -1,9 +1,12 @@
 package se.kry.codetest.http;
 
+import io.vertx.codegen.annotations.Nullable;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import io.vertx.core.eventbus.DeliveryOptions;
 import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
@@ -18,7 +21,7 @@ public class HttpServerVerticle extends AbstractVerticle {
     private Service dbService;
 
     @Override
-    public void start(Future<Void> fut) throws Exception {
+    public void start(Promise<Void> promise) throws Exception {
 
         ServiceProxyBuilder builder = new ServiceProxyBuilder(vertx).setAddress(ServiceConstants.DB_QUEUE);
 
@@ -36,9 +39,9 @@ public class HttpServerVerticle extends AbstractVerticle {
             .listen(8080, result -> {
                 if (result.succeeded()) {
                     System.out.println("KRY code test service started");
-                    fut.complete();
+                    promise.complete();
                 } else {
-                    fut.fail(result.cause());
+                    promise.fail(result.cause());
                 }
             });
 

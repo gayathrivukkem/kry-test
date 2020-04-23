@@ -65,7 +65,7 @@ run {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = '4.6'
+  gradleVersion = '4.8'
 }
 
 task annotationProcessing(type: JavaCompile, group: 'build') { // codegen
@@ -81,12 +81,6 @@ task annotationProcessing(type: JavaCompile, group: 'build') { // codegen
           "-processor", "io.vertx.codegen.CodeGenProcessor",
           "-Acodegen.output=${project.projectDir}/src/main"
   ]
-}
-
-codeGen {
-  vertxVersion = '3.8.4' // (2)
-  generatedDirs = "src/main/generated"
-  generationPath = "proxy"
 }
 
 sourceSets {

@@ -42,3 +42,9 @@ You can also run gradle directly from the command line:
 ```
 ./gradlew clean run
 ```
+
+# Completed tasks
+- Whenever the server is restarted, used data base to persist service
+- Ability to add, update and delete service (CRUD)
+- Implemeted HTTP poller to update status of services
+- create/update/delete functionality for services on frontend

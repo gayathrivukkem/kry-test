@@ -1,27 +1,31 @@
 package se.kry.codetest;
 
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
+import io.vertx.core.Promise;
 import se.kry.codetest.database.DatabaseVerticle;
-import se.kry.codetest.poll.PollerVerticle;
 import se.kry.codetest.util.ServiceConstants;
 
 public class MainVerticle extends AbstractVerticle {
 
     @Override
-    public void start(Future<Void> fut) {
+    public void start(Promise<Void> promise) {
 
-        vertx.deployVerticle(new DatabaseVerticle(), res -> {
-            if (res.succeeded()) {
-                vertx.deployVerticle("se.kry.codetest.http.HttpServerVerticle", result -> {
-                    System.out.println("Deployment id is: " + result.result());
-                    fut.complete();
-                });
-                vertx.deployVerticle("se.kry.codetest.poll.PollerVerticle");
+        Promise<String> dbDeploymentPromise = Promise.promise();
+        vertx.deployVerticle(new DatabaseVerticle(), dbDeploymentPromise);
+
+        Future<String> deployHttpFuture = dbDeploymentPromise.future().compose(id -> {
+            Promise<String> deployPromise = Promise.promise();
+            vertx.deployVerticle("se.kry.codetest.http.HttpServerVerticle", deployPromise);
+            return deployPromise.future();
+        });
+
+        vertx.deployVerticle("se.kry.codetest.poll.PollerVerticle", Promise.promise());
+        deployHttpFuture.setHandler(ar -> {
+            if (ar.succeeded()) {
+                promise.complete();
             } else {
-                System.out.println("Deployment failed!");
-                fut.fail(res.cause());
+                promise.fail(ar.cause());
             }
         });
         vertx.setPeriodic(1000 * 60, x -> {
