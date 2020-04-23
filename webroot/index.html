@@ -1,15 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.9/validator.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <meta charset="UTF-8">
-    <title>Welcome to KRY</title>
+    <title>Welcome</title>
 </head>
-<body>
-KRY status poller
-<ul id="service-list">
-</ul>
-<input type="text" id="url-name">
-<button id="post-service">Save</button>
+<body >
+<div class="container" role="main">
+    <div class="jumbotron jumbotron-fluid">
+        <h1 class="display-4">KRY status poller</h1>
+    </div>
+    <div class="page-header">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Services</h1>
+                <button class="pull-right btn btn-primary service-add" data-action="add" data-toggle="modal"
+                        data-target="#serviceModal">
+                    <span class="glyphicon glyphicon-plus"></span> Add Service
+                </button>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th style="display: none">#</th>
+                        <th>Name</th>
+                        <th>Url</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody id="content">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="serviceModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title" id="serviceModalTitle">Add a service</h4>
+            </div>
+            <div class="modal-body">
+                <form data-toggle="validator" role="form">
+                    <div class="form-group">
+                        <label for="service-name" class="control-label">Name:</label>
+                        <input type="text" class="form-control" id="service-name" data-validate="true" data-error="Name cannot be empty"  required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="service-url" class="control-label">Url:</label>
+                        <input type="text" class="form-control" id="service-url" data-validate="true"
+                               data-error="Url cannot be empty" pattern="^www.?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)" data-pattern-error="Entered url is not valid" required>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="form-group text-right">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="submit" id="serviceAction" class="btn btn-primary" >Save</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 </body>
 <script src="static/code.js">

@@ -3,4 +3,7 @@ out/
 .idea/
 .gradle/
 gradle
-.vertx
+.vertx/
+build/
+src/main/generated/
+testDB.db
